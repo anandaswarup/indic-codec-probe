@@ -1,0 +1,36 @@
+schema_version: 1
+verified_at: "2026-08-26"
+
+indicvoices_r:
+  repo_id: ai4bharat/indicvoices_r
+  revision: 5f4495c91d500742a58d1be2ab07d77f73c0acf8
+  gated: true
+  languages:
+    - Hindi
+    - Telugu
+
+indic_mfa:
+  repository: https://github.com/AI4Bharat/IndicMFA
+  revision: 6b4b9d811f61e99aff85c63df02a16f7e6e9aa02
+  release_assets:
+    hindi:
+      dictionary_url: null
+      dictionary_sha256: null
+      acoustic_model_url: null
+      acoustic_model_sha256: null
+      mfa_version: null
+    telugu:
+      dictionary_url: null
+      dictionary_sha256: null
+      acoustic_model_url: null
+      acoustic_model_sha256: null
+      mfa_version: null
+
+mimi:
+  repo_id: kyutai/mimi
+  revision: null
+
+wavlm:
+  repo_id: microsoft/wavlm-large
+  revision: null
+  distillation_layer: null

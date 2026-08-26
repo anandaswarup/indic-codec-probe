@@ -1,0 +1,28 @@
+schema_version: 1
+status: blocked_on_source_pins_and_implementation
+phase: pilot
+languages:
+  - Hindi
+  - Telugu
+duration_minutes_per_language: 30
+segmentation_policies:
+  Hindi:
+    - codepoint
+    - greedy_akshara
+  Telugu:
+    - codepoint
+representations:
+  - mimi_unquantized
+  - mimi_codebooks_0_to_7
+  - log_mel_80
+  - wavlm_teacher
+probes:
+  - linear_unit_classification
+seeds:
+  - 17
+  - 29
+  - 43
+go_no_go:
+  visual_textgrids_per_language: 20
+  require_unquantized_above_mel_by_seed_variance: true
+  require_codebook_0_7_difference: true
