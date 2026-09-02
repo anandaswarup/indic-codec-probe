@@ -12,6 +12,7 @@ Implemented:
 - `.env`-based local artifact configuration;
 - source and artifact lock files;
 - qualified Hindi/Telugu IndicMFA release assets and a tested local MFA runtime;
+- immutable Mimi/WavLM revisions and a tested pilot representation contract;
 - deterministic run identifiers and SHA-256 helpers;
 - run manifest generation, producer validation, and local verification;
 - a standalone Hugging Face Jobs persistence smoke script;
@@ -56,9 +57,10 @@ uv run indic-codec-probe doctor --json
 - Alignment assets and guidance:
   [`AI4Bharat/IndicMFA`](https://github.com/AI4Bharat/IndicMFA).
 
-The currently verified repository revisions and remaining unresolved model
-pins are recorded in `configs/sources.yaml`. See `docs/indicmfa-assets.md` for
-the local IndicMFA asset/runtime qualification and its limits.
+The verified repository and model revisions are recorded in
+`configs/sources.yaml`. See `docs/indicmfa-assets.md` for the local IndicMFA
+asset/runtime qualification and `docs/model-contracts.md` for the frozen Mimi
+and WavLM representation geometry and its limits.
 
 ## Artifact lifecycle
 

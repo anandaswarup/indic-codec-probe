@@ -48,3 +48,35 @@ def test_local_mfa_environment_pins_drift_sensitive_dependencies() -> None:
     assert lock_lines[1] == "@EXPLICIT"
     assert all("#" in line for line in lock_lines[2:])
     assert not any("/Users/" in line for line in lock_lines)
+
+
+def test_p3_model_sources_and_pilot_contract_are_resolved() -> None:
+    config = yaml.safe_load(SOURCE_CONFIG.read_text())
+    mimi = config["mimi"]
+    wavlm = config["wavlm"]
+
+    assert GIT_SHA.fullmatch(mimi["revision"])
+    assert mimi["sampling_rate_hz"] == 24_000
+    assert mimi["frame_rate_hz"] == 12.5
+    assert mimi["latent_dim"] == 512
+    assert mimi["pilot_codebooks"] == 8
+    assert mimi["checkpoint_codebooks"] == 32
+    assert mimi["semantic_codebooks"] == 1
+    assert mimi["codebook_size"] == 2048
+    assert mimi["codeword_dim"] == 256
+
+    assert GIT_SHA.fullmatch(wavlm["revision"])
+    assert wavlm["sampling_rate_hz"] == 16_000
+    assert wavlm["native_frame_rate_hz"] == 50.0
+    assert wavlm["hidden_dim"] == 1024
+    assert wavlm["encoder_layers"] == 24
+    assert wavlm["distillation_layer"] == 24
+    assert wavlm["distillation_layer_basis"] == "pilot_preregistration_final_encoder_layer"
+    assert wavlm["upstream_training_layer_status"] == "not_reported"
+    assert wavlm["pooling"] == {
+        "type": "average",
+        "kernel_frames": 8,
+        "stride_frames": 4,
+        "padding_frames": 0,
+        "target_frame_rate_hz": 12.5,
+    }

@@ -51,9 +51,30 @@ indic_mfa:
 
 mimi:
   repo_id: kyutai/mimi
-  revision: null
+  revision: 89091b3e466eb6a9d11e537bf26b144f194978f7
+  sampling_rate_hz: 24000
+  frame_rate_hz: 12.5
+  latent_dim: 512
+  pilot_codebooks: 8
+  checkpoint_codebooks: 32
+  semantic_codebooks: 1
+  codebook_size: 2048
+  codeword_dim: 256
 
 wavlm:
   repo_id: microsoft/wavlm-large
-  revision: null
-  distillation_layer: null
+  revision: c1423ed94bb01d80a3f5ce5bc39f6026a0f4828c
+  sampling_rate_hz: 16000
+  native_frame_rate_hz: 50.0
+  hidden_dim: 1024
+  encoder_layers: 24
+  distillation_layer: 24
+  distillation_layer_indexing: hidden_states[0]=feature_projection; hidden_states[1..24]=encoder_layers
+  distillation_layer_basis: pilot_preregistration_final_encoder_layer
+  upstream_training_layer_status: not_reported
+  pooling:
+    type: average
+    kernel_frames: 8
+    stride_frames: 4
+    padding_frames: 0
+    target_frame_rate_hz: 12.5
