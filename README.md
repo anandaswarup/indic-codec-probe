@@ -24,21 +24,6 @@ Not implemented yet:
 - unit or speaker probes;
 - experimental metrics, figures, or scientific conclusions.
 
-## Workspace boundary
-
-The Git repository is this `src/` directory. Its sibling `../artifacts/`
-contains generated outputs and is deliberately outside Git. Local research
-planning lives in `../docs/`.
-
-```text
-indic-codec-probe/
-├── artifacts/
-├── docs/
-└── src/          # this Git repository
-```
-
-Run all Git and uv commands from `src/`.
-
 ## Setup
 
 ```bash
@@ -46,10 +31,16 @@ uv sync --locked --group dev
 cp .env.example .env
 ```
 
-Edit `.env` and set `INDIC_CODEC_PROBE_ARTIFACT_ROOT`. Set
-`INDIC_CODEC_PROBE_HF_ARTIFACT_BUCKET` after creating the private remote
-bucket. Hugging Face credentials are managed with `hf auth`; never put a token
-in `.env` or Git.
+Edit `.env` and set `INDIC_CODEC_PROBE_ARTIFACT_ROOT`. Create a private Hugging
+Face Storage Bucket for experiment outputs:
+
+```bash
+hf buckets create <hf-namespace>/indic-codec-probe-runs --private --exist-ok
+```
+
+Set `INDIC_CODEC_PROBE_HF_ARTIFACT_BUCKET` in `.env` to the resulting bucket ID.
+Hugging Face credentials are managed with `hf auth`; never put a token in
+`.env` or Git.
 
 Check the local configuration:
 

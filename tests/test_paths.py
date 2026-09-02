@@ -16,7 +16,8 @@ def test_paths_load_from_environment(monkeypatch: pytest.MonkeyPatch, tmp_path: 
     assert paths.hf_artifact_bucket == "research/indic-codec-probe-runs"
 
 
-def test_paths_require_artifact_root(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_paths_require_artifact_root(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    monkeypatch.chdir(tmp_path)
     monkeypatch.delenv("INDIC_CODEC_PROBE_ARTIFACT_ROOT", raising=False)
 
     with pytest.raises(
