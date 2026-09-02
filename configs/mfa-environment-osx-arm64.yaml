@@ -1,0 +1,15 @@
+# Local P2 qualification environment. These builds are specific to osx-arm64;
+# create a separately locked linux-64 environment before remote alignment.
+name: indic-codec-probe-mfa
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11.16
+  - montreal-forced-aligner=3.1.3=pyhd8ed1ab_1
+  - kalpy=0.6.5=cpu_py311hdcf3481_1
+  - kaldi=5.5.1112=cpu_h175306b_7
+  - openfst=1.8.3=h950e60b_3
+  - praatio=6.0.0=pyhd8ed1ab_0
+  # Newer releases break MFA 3.1.3 at import time.
+  - joblib=1.4.2=pyhd8ed1ab_1
+  - setuptools=70.3.0=pyhd8ed1ab_0

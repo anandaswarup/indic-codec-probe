@@ -11,6 +11,7 @@ Implemented:
 - uv-managed Python package and locked development environment;
 - `.env`-based local artifact configuration;
 - source and artifact lock files;
+- qualified Hindi/Telugu IndicMFA release assets and a tested local MFA runtime;
 - deterministic run identifiers and SHA-256 helpers;
 - run manifest generation, producer validation, and local verification;
 - a standalone Hugging Face Jobs persistence smoke script;
@@ -19,7 +20,7 @@ Implemented:
 Not implemented yet:
 
 - IndicVoices-R sampling or audio streaming;
-- IndicMFA model compatibility checks, segmentation, or alignment;
+- IndicMFA corpus construction, segmentation, alignment, or alignment QC;
 - Mimi, WavLM, or log-mel feature extraction;
 - unit or speaker probes;
 - experimental metrics, figures, or scientific conclusions.
@@ -56,7 +57,8 @@ uv run indic-codec-probe doctor --json
   [`AI4Bharat/IndicMFA`](https://github.com/AI4Bharat/IndicMFA).
 
 The currently verified repository revisions and remaining unresolved model
-pins are recorded in `configs/sources.yaml`.
+pins are recorded in `configs/sources.yaml`. See `docs/indicmfa-assets.md` for
+the local IndicMFA asset/runtime qualification and its limits.
 
 ## Artifact lifecycle
 

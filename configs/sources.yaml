@@ -1,5 +1,5 @@
 schema_version: 1
-verified_at: "2026-08-26"
+verified_at: "2026-09-02"
 
 indicvoices_r:
   repo_id: ai4bharat/indicvoices_r
@@ -12,19 +12,42 @@ indicvoices_r:
 indic_mfa:
   repository: https://github.com/AI4Bharat/IndicMFA
   revision: 6b4b9d811f61e99aff85c63df02a16f7e6e9aa02
+  qualification_runtime:
+    platform: osx-arm64
+    environment_file: configs/mfa-environment-osx-arm64.yaml
+    explicit_lock_file: configs/mfa-osx-arm64.lock
+    mfa_version: 3.1.3
   release_assets:
     hindi:
-      dictionary_url: null
-      dictionary_sha256: null
-      acoustic_model_url: null
-      acoustic_model_sha256: null
-      mfa_version: null
+      release_id: 169272680
+      release_tag: Hindi
+      release_tag_commit: be34b41d3a1560b4b98b2f27a057481edc9d681f
+      released_at: "2024-08-08T08:41:24Z"
+      dictionary_asset_id: 184627221
+      dictionary_url: https://github.com/AI4Bharat/IndicMFA/releases/download/Hindi/Hindi_Dict_g2g.txt
+      dictionary_bytes: 8151
+      dictionary_sha256: 33929a4937b2537e2a3e37d517cbbeb8f8804d78650a0b449c2e496118c2be11
+      acoustic_model_asset_id: 184627014
+      acoustic_model_url: https://github.com/AI4Bharat/IndicMFA/releases/download/Hindi/Hindi_All_Acoustic.zip
+      acoustic_model_bytes: 61338606
+      acoustic_model_sha256: 1c2e02e5f328df0a5466af47a4304b949e393cfcdeea9c2bcb5159fca9de19f2
+      model_metadata_version: 3.0.7
+      mfa_version: 3.1.3
     telugu:
-      dictionary_url: null
-      dictionary_sha256: null
-      acoustic_model_url: null
-      acoustic_model_sha256: null
-      mfa_version: null
+      release_id: 169622480
+      release_tag: Telugu
+      release_tag_commit: 1ab9e9b7600169e99c23db83675937c5251f53e6
+      released_at: "2024-08-10T11:27:36Z"
+      dictionary_asset_id: 185117417
+      dictionary_url: https://github.com/AI4Bharat/IndicMFA/releases/download/Telugu/Telugu_Dictionary_g2g.txt
+      dictionary_bytes: 3707
+      dictionary_sha256: 066d78a9faaafb49df321d65dd5d81ed335bc04608739f47b97595a9f45e7c7f
+      acoustic_model_asset_id: 185117348
+      acoustic_model_url: https://github.com/AI4Bharat/IndicMFA/releases/download/Telugu/Telugu_Acoustic_Model.zip
+      acoustic_model_bytes: 61448474
+      acoustic_model_sha256: b6b1ec92f28cdc705f84ce37a1577b995c9b9f1eed6f154acfb5fc3146ad4c43
+      model_metadata_version: 3.1.3
+      mfa_version: 3.1.3
 
 mimi:
   repo_id: kyutai/mimi
