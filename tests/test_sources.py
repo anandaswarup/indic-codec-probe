@@ -6,6 +6,7 @@ import yaml
 SOURCE_CONFIG = Path(__file__).parents[1] / "configs" / "sources.yaml"
 MFA_ENVIRONMENT = Path(__file__).parents[1] / "configs" / "mfa-environment-osx-arm64.yaml"
 MFA_LOCK = Path(__file__).parents[1] / "configs" / "mfa-osx-arm64.lock"
+PILOT_CONFIG = Path(__file__).parents[1] / "configs" / "pilot.yaml"
 GIT_SHA = re.compile(r"[0-9a-f]{40}")
 SHA256 = re.compile(r"[0-9a-f]{64}")
 
@@ -80,3 +81,25 @@ def test_p3_model_sources_and_pilot_contract_are_resolved() -> None:
         "padding_frames": 0,
         "target_frame_rate_hz": 12.5,
     }
+
+
+def test_p4_selection_contract_is_explicit() -> None:
+    config = yaml.safe_load(PILOT_CONFIG.read_text())
+
+    assert config["status"] == "p4_complete"
+    assert config["selection"] == {
+        "seed": 20260829,
+        "split_duration_minutes": {"train": 20, "dev": 5, "test": 5},
+    }
+    assert (
+        sum(config["selection"]["split_duration_minutes"].values())
+        == config["duration_minutes_per_language"]
+    )
+    assert GIT_SHA.fullmatch(config["p4_completion"]["dataset_revision"])
+    assert SHA256.fullmatch(config["p4_completion"]["pilot_manifest_sha256"])
+    assert config["p4_completion"]["selected_utterances"] == 376
+    assert config["p4_completion"]["real_alignment_smokes"] == [
+        "Hindi/codepoint",
+        "Hindi/greedy_akshara",
+        "Telugu/codepoint",
+    ]

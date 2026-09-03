@@ -13,6 +13,10 @@ Implemented:
 - source and artifact lock files;
 - qualified Hindi/Telugu IndicMFA release assets and a tested local MFA runtime;
 - immutable Mimi/WavLM revisions and a tested pilot representation contract;
+- a frozen, audio-bound 60-minute IndicVoices-R pilot with speaker-disjoint splits;
+- Unicode-codepoint and Hindi greedy-akshara segmentation;
+- MFA corpus construction, real alignment smokes for all three segmentation policies,
+  TextGrid QC, and review queues;
 - deterministic run identifiers and SHA-256 helpers;
 - run manifest generation, producer validation, and local verification;
 - a standalone Hugging Face Jobs persistence smoke script;
@@ -20,8 +24,7 @@ Implemented:
 
 Not implemented yet:
 
-- IndicVoices-R sampling or audio streaming;
-- IndicMFA corpus construction, segmentation, alignment, or alignment QC;
+- full IndicMFA pilot alignment or manual TextGrid review;
 - Mimi, WavLM, or log-mel feature extraction;
 - unit or speaker probes;
 - experimental metrics, figures, or scientific conclusions.
@@ -60,7 +63,8 @@ uv run indic-codec-probe doctor --json
 The verified repository and model revisions are recorded in
 `configs/sources.yaml`. See `docs/indicmfa-assets.md` for the local IndicMFA
 asset/runtime qualification and `docs/model-contracts.md` for the frozen Mimi
-and WavLM representation geometry and its limits.
+and WavLM representation geometry and its limits. The P4 metadata contract and
+local commands are in `docs/pilot-alignment.md`.
 
 ## Artifact lifecycle
 

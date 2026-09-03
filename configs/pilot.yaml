@@ -1,10 +1,24 @@
 schema_version: 1
-status: blocked_on_source_pins_and_implementation
+status: p4_complete
 phase: pilot
 languages:
   - Hindi
   - Telugu
 duration_minutes_per_language: 30
+selection:
+  seed: 20260829
+  split_duration_minutes:
+    train: 20
+    dev: 5
+    test: 5
+p4_completion:
+  dataset_revision: 5f4495c91d500742a58d1be2ab07d77f73c0acf8
+  pilot_manifest_sha256: b7aae172b8f17204613940e26bb90f1b040c2bdca3127c53195d13e0d642fda2
+  selected_utterances: 376
+  real_alignment_smokes:
+    - Hindi/codepoint
+    - Hindi/greedy_akshara
+    - Telugu/codepoint
 segmentation_policies:
   Hindi:
     - codepoint
