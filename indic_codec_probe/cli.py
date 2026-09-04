@@ -20,7 +20,9 @@ from indic_codec_probe.artifacts import (
 )
 from indic_codec_probe.paths import ProjectPaths
 from indic_codec_probe.pilot import PilotError, write_pilot_manifest
+from indic_codec_probe.probes import evaluate_go_no_go, run_linear_probes
 from indic_codec_probe.textgrids import evaluate_alignments, write_review_queue
+from indic_codec_probe.unit_features import build_unit_bundle
 
 PROJECT_ROOT = Path(__file__).parents[1]
 
@@ -110,6 +112,35 @@ def build_parser() -> argparse.ArgumentParser:
     review.add_argument("output", type=Path)
     review.add_argument("--count", type=int, default=20)
     review.add_argument("--seed", type=int, default=20260829)
+
+    pool = subparsers.add_parser(
+        "pool-unit-features", help="pool frame representations over aligned units"
+    )
+    pool.add_argument("corpus_manifest", type=Path)
+    pool.add_argument("textgrid_root", type=Path)
+    pool.add_argument("frame_root", type=Path)
+    pool.add_argument("output", type=Path)
+    pool.add_argument("--tier", default="phones")
+    pool.add_argument("--minimum-overlap-seconds", type=float, default=1e-6)
+
+    probes = subparsers.add_parser(
+        "linear-probes", help="run the frozen P6 PCA and linear-probe recipe"
+    )
+    probes.add_argument("bundle", type=Path)
+    probes.add_argument("output", type=Path)
+    probes.add_argument("--pilot-config", type=Path, default=PROJECT_ROOT / "configs/pilot.yaml")
+    probes.add_argument("--language", required=True, choices=("Hindi", "Telugu"))
+    probes.add_argument("--policy", required=True, choices=("codepoint", "greedy_akshara"))
+
+    gates = subparsers.add_parser("p6-gates", help="evaluate the preregistered P6 gates")
+    gates.add_argument("output", type=Path)
+    gates.add_argument("--probe-report", action="append", type=Path, required=True)
+    gates.add_argument("--review-report", action="append", type=Path, required=True)
+    gates.add_argument("--pilot-config", type=Path, default=PROJECT_ROOT / "configs/pilot.yaml")
+
+    figure = subparsers.add_parser("p6-figure", help="render the primary P6 codebook profile")
+    figure.add_argument("output", type=Path)
+    figure.add_argument("--probe-report", action="append", type=Path, required=True)
     return parser
 
 
@@ -171,11 +202,72 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
         elif args.command == "review-queue":
             result = write_review_queue(args.qc, args.output, args.count, args.seed)
+        elif args.command == "pool-unit-features":
+            result = build_unit_bundle(
+                args.corpus_manifest,
+                args.textgrid_root,
+                args.frame_root,
+                args.output,
+                tier_name=args.tier,
+                minimum_overlap_seconds=args.minimum_overlap_seconds,
+            )
+        elif args.command == "linear-probes":
+            import yaml
+
+            config = yaml.safe_load(args.pilot_config.read_text(encoding="utf-8"))
+            recipe = config["p6"]["linear_probe"]
+            result = {
+                "language": args.language,
+                "policy": args.policy,
+                **run_linear_probes(
+                    args.bundle,
+                    seeds=[int(seed) for seed in config["seeds"]],
+                    pca_components=int(recipe["pca_components"]),
+                    c_values=[float(value) for value in recipe["regularization_c"]],
+                    max_iter=int(recipe["max_iterations"]),
+                    minimum_train_examples_per_class=int(
+                        recipe["minimum_train_examples_per_class"]
+                    ),
+                    selection_representation=recipe["selection_representation"],
+                ),
+            }
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_text(
+                json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+            )
+        elif args.command == "p6-gates":
+            import yaml
+
+            config = yaml.safe_load(args.pilot_config.read_text(encoding="utf-8"))
+            probe_reports = [
+                json.loads(path.read_text(encoding="utf-8")) for path in args.probe_report
+            ]
+            review_reports = [
+                json.loads(path.read_text(encoding="utf-8")) for path in args.review_report
+            ]
+            result = evaluate_go_no_go(
+                probe_reports,
+                review_reports,
+                [int(seed) for seed in config["seeds"]],
+                primary_policies=config["p6"]["primary_policies"],
+            )
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_text(
+                json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+            )
+        elif args.command == "p6-figure":
+            from indic_codec_probe.figures import plot_codebook_profile
+
+            plot_codebook_profile(
+                [json.loads(path.read_text(encoding="utf-8")) for path in args.probe_report],
+                args.output,
+            )
+            result = {"status": "passed", "output": str(args.output)}
         elif args.command == "manifest-run":
             result = {"manifest": str(write_manifest(args.run_root))}
         elif args.command == "validate-run":
             result = validate_run(args.run_root)
-        else:
+        elif args.command == "verify-run":
             result = verify_run(args.run_root)
     except (ArtifactValidationError, PilotError, OSError, json.JSONDecodeError) as error:
         print(json.dumps({"status": "failed", "error": str(error)}, indent=2))

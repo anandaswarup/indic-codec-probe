@@ -49,3 +49,12 @@ uv run indic-codec-probe verify-run \
 Future jobs that access gated IndicVoices-R through Hub APIs must add
 `--secrets HF_TOKEN`. Never put the token in source, `.env`, normal environment
 arguments, or logs.
+
+## P6 scientific pilot
+
+P6 implementation is documented in `docs/p6-pilot.md`; its reviewed hardware,
+timeouts, and cost ceilings are in `configs/p6-jobs.yaml`. The execution order
+is full alignment, representation extraction, per-condition linear probes,
+local TextGrid review, then gate evaluation. No P6 Job may be submitted until
+the source Git SHA, commands, mounted inputs, immutable output paths, maximum
+cost, and stop conditions have been reviewed and explicitly approved.

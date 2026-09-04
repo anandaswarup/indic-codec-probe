@@ -1,3 +1,4 @@
+import hashlib
 import re
 from pathlib import Path
 
@@ -6,6 +7,8 @@ import yaml
 SOURCE_CONFIG = Path(__file__).parents[1] / "configs" / "sources.yaml"
 MFA_ENVIRONMENT = Path(__file__).parents[1] / "configs" / "mfa-environment-osx-arm64.yaml"
 MFA_LOCK = Path(__file__).parents[1] / "configs" / "mfa-osx-arm64.lock"
+MFA_LINUX_ENVIRONMENT = Path(__file__).parents[1] / "configs" / "mfa-environment-linux-64.yaml"
+MFA_LINUX_LOCK = Path(__file__).parents[1] / "configs" / "mfa-linux-64.lock"
 PILOT_CONFIG = Path(__file__).parents[1] / "configs" / "pilot.yaml"
 GIT_SHA = re.compile(r"[0-9a-f]{40}")
 SHA256 = re.compile(r"[0-9a-f]{64}")
@@ -49,6 +52,29 @@ def test_local_mfa_environment_pins_drift_sensitive_dependencies() -> None:
     assert lock_lines[1] == "@EXPLICIT"
     assert all("#" in line for line in lock_lines[2:])
     assert not any("/Users/" in line for line in lock_lines)
+
+
+def test_remote_mfa_environment_has_an_immutable_linux_lock() -> None:
+    sources = yaml.safe_load(SOURCE_CONFIG.read_text())
+    runtime = sources["indic_mfa"]["remote_runtime"]
+    environment = yaml.safe_load(MFA_LINUX_ENVIRONMENT.read_text())
+    dependencies = set(environment["dependencies"])
+
+    assert runtime["platform"] == "linux-64"
+    assert runtime["mfa_version"] == "3.1.3"
+    assert "montreal-forced-aligner=3.1.3=pyhd8ed1ab_1" in dependencies
+    assert "joblib=1.4.2=pyhd8ed1ab_1" in dependencies
+    assert "setuptools=70.3.0=pyhd8ed1ab_0" in dependencies
+    assert SHA256.fullmatch(runtime["explicit_lock_sha256"])
+
+    lock_lines = MFA_LINUX_LOCK.read_text().splitlines()
+    assert lock_lines[1] == "@EXPLICIT"
+    assert len(lock_lines) > 200
+    assert all("#" in line for line in lock_lines[2:])
+    assert not any("/Users/" in line for line in lock_lines)
+    assert (
+        hashlib.sha256(MFA_LINUX_LOCK.read_bytes()).hexdigest() == runtime["explicit_lock_sha256"]
+    )
 
 
 def test_p3_model_sources_and_pilot_contract_are_resolved() -> None:
@@ -103,3 +129,4 @@ def test_p4_selection_contract_is_explicit() -> None:
         "Hindi/greedy_akshara",
         "Telugu/codepoint",
     ]
+    assert config["p6"]["status"] == "implemented_not_executed"

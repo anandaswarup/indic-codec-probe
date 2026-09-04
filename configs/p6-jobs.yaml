@@ -1,0 +1,24 @@
+schema_version: 1
+status: implementation_only_no_jobs_submitted
+alignment:
+  image: mambaorg/micromamba@sha256:ce2026639d612fbe837a35ca9d513292a8d776a24a5e6c82cccf9dddf45ad3d2
+  flavor: cpu-upgrade
+  timeout: 2h
+  maximum_compute_cost_usd: 0.06
+  runtime_lock: configs/mfa-linux-64.lock
+representation_extraction:
+  flavor: t4-small
+  timeout: 2h
+  maximum_compute_cost_usd: 0.80
+  shard_count: 1
+probe_conditions:
+  flavor: cpu-upgrade
+  timeout: 2h
+  maximum_compute_cost_usd_per_condition: 0.06
+  conditions:
+    - Hindi/codepoint
+    - Telugu/codepoint
+    - Hindi/greedy_akshara
+approval:
+  required_before_paid_jobs: true
+  required_before_uploading_gated_audio: true

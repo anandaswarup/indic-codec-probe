@@ -36,6 +36,32 @@ seeds:
   - 17
   - 29
   - 43
+p6:
+  status: implemented_not_executed
+  primary_policies:
+    Hindi: codepoint
+    Telugu: codepoint
+  frame_rate_hz: 12.5
+  log_mel:
+    sampling_rate_hz: 24000
+    mel_bins: 80
+    native_frame_rate_hz: 50.0
+    pool_frames: 4
+  unit_pooling:
+    minimum_overlap_seconds: 0.000001
+  linear_probe:
+    pca_components: 64
+    regularization_c:
+      - 0.01
+      - 0.1
+      - 1.0
+      - 10.0
+    max_iterations: 2000
+    minimum_train_examples_per_class: 5
+    selection_representation: mimi_unquantized
+    metric: macro_f1
+  gate_metric: macro_f1
+  gate_seed_dispersion: sample_standard_deviation_of_paired_differences
 go_no_go:
   visual_textgrids_per_language: 20
   require_unquantized_above_mel_by_seed_variance: true

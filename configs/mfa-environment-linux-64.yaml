@@ -1,0 +1,14 @@
+# P6 remote alignment environment. The matching explicit lock is linux-64 only.
+name: indic-codec-probe-mfa
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11.16=h5f976f7_2_cpython
+  - montreal-forced-aligner=3.1.3=pyhd8ed1ab_1
+  - kalpy=0.6.5=cpu_py311h0268b37_1
+  - kaldi=5.5.1112=cpu_h7360626_9
+  - openfst=1.8.3=h84d6215_3
+  - praatio=6.0.0=pyhd8ed1ab_0
+  # Newer releases break MFA 3.1.3 at import time.
+  - joblib=1.4.2=pyhd8ed1ab_1
+  - setuptools=70.3.0=pyhd8ed1ab_0

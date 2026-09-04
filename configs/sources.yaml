@@ -17,6 +17,12 @@ indic_mfa:
     environment_file: configs/mfa-environment-osx-arm64.yaml
     explicit_lock_file: configs/mfa-osx-arm64.lock
     mfa_version: 3.1.3
+  remote_runtime:
+    platform: linux-64
+    environment_file: configs/mfa-environment-linux-64.yaml
+    explicit_lock_file: configs/mfa-linux-64.lock
+    explicit_lock_sha256: bef1df4647e13abb5c342f81255bbddf9eae40dbc79363400788757df9aa549f
+    mfa_version: 3.1.3
   release_assets:
     hindi:
       release_id: 169272680

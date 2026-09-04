@@ -20,14 +20,18 @@ Implemented:
 - deterministic run identifiers and SHA-256 helpers;
 - run manifest generation, producer validation, and local verification;
 - a standalone Hugging Face Jobs persistence smoke script;
+- the implemented, not-yet-executed P6 full-alignment, matched-rate
+  representation, unit-pooling, linear-probe, uncertainty, gate, and primary
+  figure path;
+- an immutable Linux-64 MFA environment lock for remote alignment;
 - unit tests and GitHub Actions CI.
 
 Not implemented yet:
 
-- full IndicMFA pilot alignment or manual TextGrid review;
-- Mimi, WavLM, or log-mel feature extraction;
-- unit or speaker probes;
-- experimental metrics, figures, or scientific conclusions.
+- execution of the full IndicMFA pilot alignment and manual TextGrid review;
+- paid Mimi/WavLM/log-mel extraction and unit-probe Jobs;
+- speaker, cumulative-codebook, MLP, or GRU stretch experiments;
+- validated experimental metrics, rendered result figures, or scientific conclusions.
 
 ## Setup
 
@@ -97,7 +101,8 @@ Successful local verification writes `_VERIFIED`. Never analyze mutable
 `latest` paths or a run without `_VERIFIED`.
 
 See `jobs/README.md` for the HF Jobs workflow and `docs/artifact-contract.md`
-for the file contract.
+for the file contract. See `docs/p6-pilot.md` for the frozen P6 estimand,
+representations, probes, gates, execution order, and stop conditions.
 
 ## Development checks
 
